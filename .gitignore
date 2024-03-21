@@ -14,8 +14,14 @@ dist-ssr
 coverage
 *.local
 
-/cypress/videos/
-/cypress/screenshots/
+# testing
+/coverage
+
+# turbo
+.turbo
+
+# production
+/build
 
 # Editor directories and files
 .vscode/*

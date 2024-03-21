@@ -1,0 +1,8 @@
+{
+  "name": "@rand-blend/tsconfig",
+  "private": true,
+  "version": "0.0.1",
+  "files": [
+    "base.json"
+  ]
+}
