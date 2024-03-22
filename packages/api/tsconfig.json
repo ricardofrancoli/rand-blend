@@ -1,0 +1,9 @@
+{
+  "extends": "@rand-blend/tsconfig/base.json",
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "dist",
+    "declarationMap": true
+  },
+  "include": ["src/**/*", "src/**/*.ts"]
+}
