@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      dotenv-cli:
+        specifier: ^7.4.1
+        version: 7.4.1
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -93,6 +96,12 @@ importers:
 
   packages/api:
     dependencies:
+      '@fastify/cors':
+        specifier: ^9.0.1
+        version: 9.0.1
+      '@spotify/web-api-ts-sdk':
+        specifier: ^1.2.0
+        version: 1.2.0
       fastify:
         specifier: ^4.26.2
         version: 4.26.2
@@ -919,6 +928,13 @@ packages:
       fast-uri: 2.3.0
     dev: false
 
+  /@fastify/cors@9.0.1:
+    resolution: {integrity: sha512-YY9Ho3ovI+QHIL2hW+9X4XqQjXLjJqsU+sMV/xFsxZkE8p3GNnYVFpoOxF7SsP5ZL76gwvbo3V9L+FIekBGU4Q==}
+    dependencies:
+      fastify-plugin: 4.5.1
+      mnemonist: 0.39.6
+    dev: false
+
   /@fastify/error@3.4.1:
     resolution: {integrity: sha512-wWSvph+29GR783IhmvdwWnN4bUxTD01Vm5Xad4i7i1VuAOItLvbPAb69sb0IQ2N57yprvhNIwAP5B6xfKTmjmQ==}
     dev: false
@@ -1169,6 +1185,10 @@ packages:
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
+
+  /@spotify/web-api-ts-sdk@1.2.0:
+    resolution: {integrity: sha512-JUaebva3Ohwo5I5tuTqyW/FKGOMbb40YevJMySAOINRxP7qQ/AMjBzfJx0zeO6yS+wAPfQSoGNsZaUggHw8vsA==}
+    dev: false
 
   /@tsconfig/node20@20.1.2:
     resolution: {integrity: sha512-madaWq2k+LYMEhmcp0fs+OGaLFk0OenpHa4gmI4VEmCKX4PJntQ6fnnGADVFrVkBj0wIdAlQnK/MrlYTHsa1gQ==}
@@ -2033,6 +2053,26 @@ packages:
       esutils: 2.0.3
     dev: true
 
+  /dotenv-cli@7.4.1:
+    resolution: {integrity: sha512-fE1aywjRrWGxV3miaiUr3d2zC/VAiuzEGghi+QzgIA9fEf/M5hLMaRSXb4IxbUAwGmaLi0IozdZddnVU96acag==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.4.5
+      dotenv-expand: 10.0.0
+      minimist: 1.2.8
+    dev: true
+
+  /dotenv-expand@10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /dotenv@16.4.5:
+    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+    engines: {node: '>=12'}
+    dev: true
+
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
@@ -2379,6 +2419,10 @@ packages:
 
   /fast-uri@2.3.0:
     resolution: {integrity: sha512-eel5UKGn369gGEWOqBShmFJWfq/xSJvsgDzgLYC845GneayWvXBf0lJCBn5qTABfewy1ZDPoaR5OZCP+kssfuw==}
+    dev: false
+
+  /fastify-plugin@4.5.1:
+    resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
     dev: false
 
   /fastify@4.26.2:
@@ -3021,6 +3065,10 @@ packages:
       brace-expansion: 2.0.1
     dev: true
 
+  /minimist@1.2.8:
+    resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
+    dev: true
+
   /minipass@7.0.4:
     resolution: {integrity: sha512-jYofLM5Dam9279rdkWzqHozUo4ybjdZmCsDHePy5V/PbBcVMiSZR97gmAy45aqi8CK1lG2ECd356FU86avfwUQ==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -3038,6 +3086,12 @@ packages:
       pkg-types: 1.0.3
       ufo: 1.5.3
     dev: true
+
+  /mnemonist@0.39.6:
+    resolution: {integrity: sha512-A/0v5Z59y63US00cRSLiloEIw3t5G+MiKz4BhX21FI+YBJXBOGW0ohFxTxO08dsOYlzxo87T7vGfZKYp2bcAWA==}
+    dependencies:
+      obliterator: 2.0.4
+    dev: false
 
   /mrmime@2.0.0:
     resolution: {integrity: sha512-eu38+hdgojoyq63s+yTpN4XMBdt5l8HhMhc4VKLO9KM5caLIBvUm4thi7fFaxyTmCKeNnXZ5pAlBwCUnhA09uw==}
@@ -3107,6 +3161,10 @@ packages:
   /nwsapi@2.2.7:
     resolution: {integrity: sha512-ub5E4+FBPKwAZx0UwIQOjYWGHTEq5sPqHQNRN8Z9e4A7u3Tj1weLJsL59yH9vmvqEtBHaOmT6cYQKIZOxp35FQ==}
     dev: true
+
+  /obliterator@2.0.4:
+    resolution: {integrity: sha512-lgHwxlxV1qIg1Eap7LgIeoBWIMFibOjbrYPIPJZcI1mmGAI2m3lNYpK12Y+GBdPQ0U1hRwSord7GIaawz962qQ==}
+    dev: false
 
   /on-exit-leak-free@2.1.2:
     resolution: {integrity: sha512-0eJJY6hXLGf1udHwfNftBqH+g73EU4B504nZeKpz1sYRKafAghwxEJunB2O7rDZkL4PGfsMVnTXZ2EjibbqcsA==}

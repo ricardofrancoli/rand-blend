@@ -7,13 +7,15 @@
   "type": "module",
   "scripts": {
     "build": "tsx",
-    "dev": "tsx watch ./src/server.ts --watch",
+    "dev": "tsx watch ./src/server/index.ts --watch",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@spotify/web-api-ts-sdk": "^1.2.0",
     "fastify": "^4.26.2"
   },
   "devDependencies": {
