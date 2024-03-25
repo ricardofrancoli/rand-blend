@@ -26,6 +26,15 @@ export const contract = c.router(
       body: c.type<AccessToken>(),
       summary: 'Login to Spotify'
     },
+    logout: {
+      method: 'POST',
+      path: '/logout',
+      responses: {
+        201: z.string()
+      },
+      body: c.type<AccessToken>(),
+      summary: 'Logout of Spotify'
+    },
     getFavs: {
       method: 'POST',
       path: `/favs`,

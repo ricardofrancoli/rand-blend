@@ -35,6 +35,20 @@ const router = s.router(contract, {
       body: 'Logged in!'
     }
   },
+  logout: async ({ body: accessToken }) => {
+    const spotify = SpotifyApi.withAccessToken(CLIENT_ID, accessToken)
+
+    console.dir({ spotify }, { depth: null })
+
+    spotify.logOut()
+
+    console.dir({ spotifyThen: spotify }, { depth: null })
+
+    return {
+      status: 201,
+      body: 'Logged out!'
+    }
+  },
   getFavs: async ({ body: accessToken }) => {
     console.dir({ what222: accessToken }, { depth: null })
 
