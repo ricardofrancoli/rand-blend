@@ -12,7 +12,7 @@ export default function useSpotify() {
     return SpotifyApi.performUserAuthorization(
       VITE_CLIENT_ID,
       VITE_REDIRECT_URI,
-      ['user-read-private', 'user-read-email', 'user-top-read'],
+      ['user-read-private', 'user-read-email', 'user-top-read', 'playlist-modify-private'],
       'http://localhost:3003/api/login'
     )
   }
