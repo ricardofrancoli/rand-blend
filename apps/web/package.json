@@ -15,9 +15,8 @@
   },
   "dependencies": {
     "@rand-blend/api": "workspace:*",
-    "@trpc/client": "^10.45.2",
-    "@trpc/server": "^10.45.2",
     "ky": "^1.2.2",
+    "@ts-rest/core": "^3.36.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },

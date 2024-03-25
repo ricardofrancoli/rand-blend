@@ -1,38 +1,50 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import { SpotifyApi } from '@spotify/web-api-ts-sdk'
-import { fastifyTRPCPlugin, FastifyTRPCPluginOptions } from '@trpc/server/adapters/fastify'
+import { initServer } from '@ts-rest/fastify'
 
-import { createContext } from './context'
-import { appRouter, type AppRouter } from './router'
+import { getFavs } from '../controllers'
+import { contract } from './contract'
+
+const { CLIENT_ID = '' } = process.env
 
 export const app = Fastify({
   logger: true
 })
+const s = initServer()
 
-const { CLIENT_ID = '' } = process.env
-
-app
-  .register(cors, {
-    origin: 'http://localhost:5173',
-    credentials: true
-  })
-  .register(fastifyTRPCPlugin, {
-    prefix: '/api',
-    trpcOptions: {
-      router: appRouter,
-      createContext,
-      onError({ path, error }) {
-        console.error(`Error in tRPC handler on path '${path}':`, error)
-      }
-    } satisfies FastifyTRPCPluginOptions<AppRouter>['trpcOptions']
-  })
-
-app.post('/api/login', async (req, reply) => {
-  const data = req.body
-
-  // TODO: type-check data
-  const spotifySdk = SpotifyApi.withAccessToken(CLIENT_ID, data as any)
-
-  console.dir({ spotifySdk }, { depth: null })
+app.register(cors, {
+  origin: 'http://localhost:5173',
+  credentials: true
 })
+
+const router = s.router(contract, {
+  ping: async () => {
+    return {
+      status: 200,
+      body: 'hi'
+    }
+  },
+  login: async ({ body: accessToken }) => {
+    const spotify = SpotifyApi.withAccessToken(CLIENT_ID, accessToken)
+
+    console.dir({ spotify }, { depth: null })
+
+    return {
+      status: 201,
+      body: 'Logged in!'
+    }
+  },
+  getFavs: async ({ body: accessToken }) => {
+    console.dir({ what222: accessToken }, { depth: null })
+
+    const favs = await getFavs(accessToken)
+
+    return {
+      status: 200,
+      body: favs
+    }
+  }
+})
+
+app.register(s.plugin(router))

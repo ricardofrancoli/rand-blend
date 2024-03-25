@@ -1,4 +1,4 @@
 import { SpotifyApi } from '@spotify/web-api-ts-sdk'
-import type { AppRouter } from './routes/router'
+import { contract } from './routes/contract'
 
-export { SpotifyApi, AppRouter }
+export { SpotifyApi, contract }
