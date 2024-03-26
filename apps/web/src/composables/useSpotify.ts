@@ -1,3 +1,5 @@
+import { ref } from 'vue'
+
 import { client } from '@/client'
 import { SpotifyApi } from '@rand-blend/api'
 
@@ -38,6 +40,7 @@ export default function useSpotify() {
     return client.logout({ body: accessToken })
   }
 
+  const favouriteGenres = ref<string[]>()
   const getFavs = async () => {
     const accessToken = await handleAccessToken()
 
@@ -55,12 +58,13 @@ export default function useSpotify() {
 
     console.log('favs', favs)
 
-    return favs
+    favouriteGenres.value = favs
   }
 
   return {
     login,
     logout,
-    getFavs
+    getFavs,
+    favouriteGenres
   }
 }
