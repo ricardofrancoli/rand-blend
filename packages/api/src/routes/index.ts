@@ -59,9 +59,9 @@ const router = s.router(contract, {
       body: favs
     }
   },
-  createPlaylist: async ({ body: { accessToken, genres } }) => {
+  createPlaylist: async ({ body: { accessToken, genres, playlistName, requestedPopularity } }) => {
     try {
-      await createPlaylist({ accessToken, genres })
+      await createPlaylist({ accessToken, genres, playlistName, requestedPopularity })
     } catch (err) {
       console.error(err)
     }

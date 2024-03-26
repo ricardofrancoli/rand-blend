@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 import useSpotify from '@/composables/useSpotify'
 import { Checkbox } from '@/components/ui/checkbox'
 
-const { login, logout, getFavs, favouriteGenres } = useSpotify()
-
-const selectedGenres = ref<string[]>([])
+const { login, logout, getFavs, createPlaylist, favouriteGenres, selectedGenres } = useSpotify()
 
 const toggleAllGenres = (isSelected: boolean) => {
   if (isSelected) {
@@ -29,7 +25,8 @@ const toggleGenre = (genre: string, isSelected: boolean) => {
   <main>
     <a @click="login"> LOGIN </a>
     <a @click="logout"> LOGOUT </a>
-    <a @click="getFavs"> CHECK </a>
+    <a @click="getFavs"> GET GENRES </a>
+    <a @click="createPlaylist"> CREATE PLAYLIST </a>
     {{ selectedGenres }}
     <div v-if="favouriteGenres && favouriteGenres.length">
       <h2>Favourite Genres</h2>

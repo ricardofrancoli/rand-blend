@@ -41,6 +41,7 @@ export default function useSpotify() {
   }
 
   const favouriteGenres = ref<string[]>([])
+  const requestedPopularity = ref(0)
   const getFavs = async () => {
     const accessToken = await handleAccessToken()
 
@@ -56,15 +57,44 @@ export default function useSpotify() {
       throw new Error('Failed to get favs')
     }
 
-    console.log('favs', favs)
+    const { uniqueGenres, popularityAverage } = favs
 
-    favouriteGenres.value = favs
+    favouriteGenres.value = uniqueGenres
+    requestedPopularity.value = popularityAverage
+  }
+
+  const selectedGenres = ref<string[]>([])
+  const createPlaylist = async () => {
+    const accessToken = await handleAccessToken()
+
+    if (!accessToken) {
+      console.log('No access token')
+
+      return login()
+    }
+
+    const { body: playlist, status } = await client.createPlaylist({
+      body: {
+        accessToken,
+        genres: selectedGenres.value,
+        playlistName: Math.random().toString(),
+        requestedPopularity: requestedPopularity.value
+      }
+    })
+
+    if (status !== 201) {
+      throw new Error('Failed to create playlist')
+    }
+
+    console.log('playlist', playlist)
   }
 
   return {
     login,
     logout,
     getFavs,
-    favouriteGenres
+    createPlaylist,
+    favouriteGenres,
+    selectedGenres
   }
 }

@@ -47,7 +47,12 @@ export const contract = c.router(
     createPlaylist: {
       method: 'POST',
       path: '/create-playlist',
-      body: c.type<{ accessToken: AccessToken; genres: string[] }>(),
+      body: c.type<{
+        accessToken: AccessToken
+        genres: string[]
+        playlistName: string
+        requestedPopularity: number
+      }>(),
       responses: {
         201: z.string()
       },
