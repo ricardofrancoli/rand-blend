@@ -20,24 +20,22 @@ export default function useSpotify() {
   const spotify = SpotifyApi.withUserAuthorization(VITE_CLIENT_ID, VITE_REDIRECT_URI)
 
   const handleAccessToken = async () => {
-    // // const test = await trpc.getFavs.query()
-    // // console.log('test', test)
-    // const spotify = SpotifyApi.withUserAuthorization(VITE_CLIENT_ID, VITE_REDIRECT_URI)
-    // console.log(await spotify.getAccessToken())
-    // const getFavs = async () => {
-    //   console.dir({ getFavsSpotifyNu: spotify }, { depth: null })
-    //   const tracks = await spotify.currentUser.topItems('tracks')
-    //   console.dir({ tracks }, { depth: null })
-    //   return tracks
-    // }
-    // const yes = await getFavs()
-    // console.log('yes', yes)
-
     const accessToken = await spotify.getAccessToken()
 
     console.log('accessToken', accessToken)
 
     return accessToken
+  }
+
+  const logout = async () => {
+    const accessToken = await handleAccessToken()
+
+    if (!accessToken) {
+      throw new Error('No access token')
+    }
+
+    spotify.logOut()
+    return client.logout({ body: accessToken })
   }
 
   const getFavs = async () => {
@@ -62,6 +60,7 @@ export default function useSpotify() {
 
   return {
     login,
+    logout,
     getFavs
   }
 }
