@@ -40,7 +40,7 @@ export default function useSpotify() {
     return client.logout({ body: accessToken })
   }
 
-  const favouriteGenres = ref<string[]>()
+  const favouriteGenres = ref<string[]>([])
   const getFavs = async () => {
     const accessToken = await handleAccessToken()
 
