@@ -19,33 +19,20 @@ const initialiseSpotifySdk = (accessToken: AccessToken) => {
   return spotifySdk
 }
 
-export const getFavs = async (accessToken: AccessToken) => {
+export const createPlaylist = async ({
+  accessToken,
+  genres
+}: {
+  accessToken: AccessToken
+  genres: string[]
+}) => {
   const spotifySdk = initialiseSpotifySdk(accessToken)
 
-  const [topTracks, { id: userId, country }] = await Promise.all([
-    spotifySdk.currentUser.topItems('tracks', 'long_term', 50),
-    spotifySdk.currentUser.profile()
-  ])
+  const { id: userId, country } = await spotifySdk.currentUser.profile()
 
-  const artistIds: string[] = []
-
-  topTracks.items.forEach((track) => {
-    const artistId = track.artists[0]?.id
-
-    if (!artistId) {
-      return
-    }
-
-    artistIds.push(artistId)
-  })
-
-  const artists = await spotifySdk.artists.get(artistIds)
-  const genres = artists.flatMap((artist) => artist.genres)
-
-  console.dir({ genres, totGenres: genres.length }, { depth: null })
+  console.dir({ genres }, { depth: null })
 
   const tracksByGenre: Record<string, GenreTrack[]> = {}
-
   await pMap(
     genres,
     async (genre) => {
@@ -73,7 +60,6 @@ export const getFavs = async (accessToken: AccessToken) => {
   })
 
   const randomTrackUris: string[] = []
-
   Object.entries(tracksByGenre).forEach(([_, tracks]) => {
     const popularishTracks = tracks.filter((track) => track.popularity > 15)
 
@@ -93,6 +79,35 @@ export const getFavs = async (accessToken: AccessToken) => {
   await spotifySdk.playlists.addItemsToPlaylist(test.id, randomTrackUris)
 
   console.dir({ tracksByGenre, test }, { depth: null })
+}
 
-  return tracksByGenre
+export const getFavs = async (accessToken: AccessToken) => {
+  const spotifySdk = initialiseSpotifySdk(accessToken)
+
+  const [topTracks, { id: userId, country }] = await Promise.all([
+    spotifySdk.currentUser.topItems('tracks', 'long_term', 50),
+    spotifySdk.currentUser.profile()
+  ])
+
+  const artistIds: string[] = []
+  topTracks.items.forEach((track) => {
+    const artistId = track.artists[0]?.id
+
+    if (!artistId) {
+      return
+    }
+
+    artistIds.push(artistId)
+  })
+
+  const artists = await spotifySdk.artists.get(artistIds)
+  const genres = artists.flatMap((artist) => artist.genres)
+
+  console.dir({ genres, totGenres: genres.length }, { depth: null })
+
+  // await createPlaylist({ spotifySdk, genres, country, userId })
+
+  const uniqueGenres = Array.from(new Set(genres))
+
+  return uniqueGenres
 }

@@ -3,7 +3,7 @@ import cors from '@fastify/cors'
 import { SpotifyApi } from '@spotify/web-api-ts-sdk'
 import { initServer } from '@ts-rest/fastify'
 
-import { getFavs } from '../controllers'
+import { createPlaylist, getFavs } from '../controllers'
 import { contract } from './contract'
 
 const { CLIENT_ID = '' } = process.env
@@ -57,6 +57,18 @@ const router = s.router(contract, {
     return {
       status: 200,
       body: favs
+    }
+  },
+  createPlaylist: async ({ body: { accessToken, genres } }) => {
+    try {
+      await createPlaylist({ accessToken, genres })
+    } catch (err) {
+      console.error(err)
+    }
+
+    return {
+      status: 201,
+      body: 'Playlist created!'
     }
   }
 })

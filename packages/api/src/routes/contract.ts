@@ -42,7 +42,16 @@ export const contract = c.router(
       responses: {
         200: c.type<Awaited<ReturnType<typeof getFavs>>>()
       },
-      summary: 'Get favourite albums and artists'
+      summary: 'Get favourite genres'
+    },
+    createPlaylist: {
+      method: 'POST',
+      path: '/create-playlist',
+      body: c.type<{ accessToken: AccessToken; genres: string[] }>(),
+      responses: {
+        201: z.string()
+      },
+      summary: 'Create a playlist'
     }
   },
   {
