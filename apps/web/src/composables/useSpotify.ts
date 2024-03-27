@@ -71,7 +71,7 @@ export default function useSpotify() {
     }
 
     const { body: favs, status } = await client.getFavs({
-      body: { accessToken: accessToken.value, timeRange: 'short_term' }
+      body: { accessToken: accessToken.value, timeRange: timeRange.value }
     })
 
     if (status !== 200) {
