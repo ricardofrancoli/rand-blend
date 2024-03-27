@@ -16,6 +16,7 @@
   "dependencies": {
     "@rand-blend/api": "workspace:*",
     "@rand-blend/utils": "workspace:*",
+    "@spotify/web-api-ts-sdk": "^1.2.0",
     "@ts-rest/core": "^3.36.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

@@ -1,7 +1,7 @@
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 
 import { client } from '@/client'
-import { SpotifyApi } from '@rand-blend/api'
+import { SpotifyApi, type AccessToken } from '@spotify/web-api-ts-sdk'
 
 const { VITE_CLIENT_ID = '', VITE_REDIRECT_URI = '' } = import.meta.env
 
@@ -10,16 +10,9 @@ export default function useSpotify() {
     throw new Error('Missing environment variables')
   }
 
-  const login = async () => {
-    return SpotifyApi.performUserAuthorization(
-      VITE_CLIENT_ID,
-      VITE_REDIRECT_URI,
-      ['user-read-private', 'user-read-email', 'user-top-read', 'playlist-modify-private'],
-      'http://localhost:3003/api/login'
-    )
-  }
-
-  const spotify = SpotifyApi.withUserAuthorization(VITE_CLIENT_ID, VITE_REDIRECT_URI)
+  const accessToken = ref<AccessToken | null>(null)
+  const favouriteGenres = ref<string[]>([])
+  const requestedPopularity = ref(0)
 
   const handleAccessToken = async () => {
     const accessToken = await spotify.getAccessToken()
@@ -27,27 +20,52 @@ export default function useSpotify() {
     return accessToken
   }
 
-  const logout = async () => {
-    const accessToken = await handleAccessToken()
+  onBeforeMount(async () => {
+    accessToken.value = await handleAccessToken()
+  })
 
-    if (!accessToken) {
-      throw new Error('No access token')
+  const login = async () => {
+    try {
+      const what = await SpotifyApi.performUserAuthorization(
+        VITE_CLIENT_ID,
+        VITE_REDIRECT_URI,
+        ['user-read-private', 'user-read-email', 'user-top-read', 'playlist-modify-private'],
+        'http://localhost:3003/api/login'
+      )
+
+      console.log('what', what)
+
+      accessToken.value = await handleAccessToken()
+    } catch (err) {
+      console.error(err)
     }
 
-    spotify.logOut()
-    return client.logout({ body: accessToken })
+    if (!accessToken.value) {
+      throw new Error('No access token after login')
+    }
   }
 
-  const favouriteGenres = ref<string[]>([])
-  const requestedPopularity = ref(0)
-  const getFavs = async () => {
-    const accessToken = await handleAccessToken()
+  const spotify = SpotifyApi.withUserAuthorization(VITE_CLIENT_ID, VITE_REDIRECT_URI)
 
-    if (!accessToken) {
+  const logout = async () => {
+    if (!accessToken.value) {
+      throw new Error('No access token to log out')
+    }
+
+    await client.logout({ body: accessToken.value })
+    spotify.logOut()
+
+    accessToken.value = null
+    favouriteGenres.value = []
+    requestedPopularity.value = 0
+  }
+
+  const getFavs = async () => {
+    if (!accessToken.value) {
       return login()
     }
 
-    const { body: favs, status } = await client.getFavs({ body: accessToken })
+    const { body: favs, status } = await client.getFavs({ body: accessToken.value })
 
     if (status !== 200) {
       throw new Error('Failed to get favs')
@@ -61,15 +79,13 @@ export default function useSpotify() {
 
   const selectedGenres = ref<string[]>([])
   const createPlaylist = async () => {
-    const accessToken = await handleAccessToken()
-
-    if (!accessToken) {
+    if (!accessToken.value) {
       return login()
     }
 
     const { status } = await client.createPlaylist({
       body: {
-        accessToken,
+        accessToken: accessToken.value,
         genres: selectedGenres.value,
         playlistName: Math.random().toString(),
         requestedPopularity: requestedPopularity.value
@@ -82,6 +98,7 @@ export default function useSpotify() {
   }
 
   return {
+    accessToken,
     login,
     logout,
     getFavs,

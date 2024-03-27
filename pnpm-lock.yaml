@@ -29,6 +29,9 @@ importers:
       '@rand-blend/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@spotify/web-api-ts-sdk':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@ts-rest/core':
         specifier: ^3.36.0
         version: 3.36.0(zod@3.22.4)
