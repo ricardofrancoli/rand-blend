@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { getFavs } from '../controllers'
 
 import type { AccessToken } from '@spotify/web-api-ts-sdk'
+import type { TimeRange } from '../types'
 
 const c = initContract()
 
@@ -38,7 +39,7 @@ export const contract = c.router(
     getFavs: {
       method: 'POST',
       path: `/favs`,
-      body: c.type<AccessToken>(),
+      body: c.type<{ accessToken: AccessToken; timeRange: TimeRange }>(),
       responses: {
         200: c.type<Awaited<ReturnType<typeof getFavs>>>()
       },

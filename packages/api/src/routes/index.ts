@@ -43,8 +43,8 @@ const router = s.router(contract, {
       body: 'Logged out!'
     }
   },
-  getFavs: async ({ body: accessToken }) => {
-    const favs = await getFavs(accessToken)
+  getFavs: async ({ body: { accessToken, timeRange } }) => {
+    const favs = await getFavs({ accessToken, timeRange })
 
     return {
       status: 200,

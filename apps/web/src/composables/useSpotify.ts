@@ -3,6 +3,8 @@ import { onBeforeMount, ref } from 'vue'
 import { client } from '@/client'
 import { SpotifyApi, type AccessToken } from '@spotify/web-api-ts-sdk'
 
+import type { TimeRange } from '@rand-blend/api'
+
 const { VITE_CLIENT_ID = '', VITE_REDIRECT_URI = '' } = import.meta.env
 
 export default function useSpotify() {
@@ -10,7 +12,10 @@ export default function useSpotify() {
     throw new Error('Missing environment variables')
   }
 
+  const DEFAULT_TIME_RANGE = 'long_term' satisfies TimeRange
+
   const accessToken = ref<AccessToken | null>(null)
+  const timeRange = ref<TimeRange>(DEFAULT_TIME_RANGE)
   const favouriteGenres = ref<string[]>([])
   const requestedPopularity = ref(0)
 
@@ -65,7 +70,9 @@ export default function useSpotify() {
       return login()
     }
 
-    const { body: favs, status } = await client.getFavs({ body: accessToken.value })
+    const { body: favs, status } = await client.getFavs({
+      body: { accessToken: accessToken.value, timeRange: 'short_term' }
+    })
 
     if (status !== 200) {
       throw new Error('Failed to get favs')
@@ -103,6 +110,8 @@ export default function useSpotify() {
     logout,
     getFavs,
     createPlaylist,
+    DEFAULT_TIME_RANGE,
+    timeRange,
     favouriteGenres,
     selectedGenres
   }

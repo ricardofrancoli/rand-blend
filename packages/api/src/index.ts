@@ -1,4 +1,4 @@
-import { SpotifyApi } from '@spotify/web-api-ts-sdk'
 import { contract } from './routes/contract'
+import type { TimeRange } from './types'
 
-export { SpotifyApi, contract }
+export { contract, TimeRange }

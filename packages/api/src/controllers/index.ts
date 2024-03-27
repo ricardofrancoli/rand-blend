@@ -4,13 +4,7 @@ import { SpotifyApi, type AccessToken, type Market } from '@spotify/web-api-ts-s
 
 import { CLIENT_ID } from '../config'
 
-type GenreTrack = {
-  popularity: number
-  name: string | undefined
-  trackName: string
-  trackId: string
-  trackUri: string
-}
+import type { GenreTrack, TimeRange } from '../types'
 
 const TRACKS_TO_FETCH = 20
 const MAX_OFFSET = TRACKS_TO_FETCH * 1000
@@ -172,10 +166,16 @@ export const createPlaylist = async ({
   await spotifySdk.playlists.addItemsToPlaylist(newPlaylist.id, randomTrackUris)
 }
 
-export const getFavs = async (accessToken: AccessToken) => {
+export const getFavs = async ({
+  accessToken,
+  timeRange
+}: {
+  accessToken: AccessToken
+  timeRange: TimeRange
+}) => {
   const spotifySdk = initialiseSpotifySdk(accessToken)
 
-  const topTracks = await spotifySdk.currentUser.topItems('tracks', 'long_term', 50)
+  const topTracks = await spotifySdk.currentUser.topItems('tracks', timeRange, 50)
 
   const artistIds: string[] = []
   const trackPopularities: number[] = []
