@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import useSpotify from '@/composables/useSpotify'
+import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 
 const { login, logout, getFavs, createPlaylist, favouriteGenres, selectedGenres } = useSpotify()
@@ -23,10 +24,18 @@ const toggleGenre = (genre: string, isSelected: boolean) => {
 
 <template>
   <main>
-    <a @click="login"> LOGIN </a>
-    <a @click="logout"> LOGOUT </a>
-    <a @click="getFavs"> GET GENRES </a>
-    <a @click="createPlaylist"> CREATE PLAYLIST </a>
+    <Button>
+      <a @click="login"> LOGIN </a>
+    </Button>
+    <Button>
+      <a @click="logout"> LOGOUT </a>
+    </Button>
+    <Button>
+      <a @click="getFavs"> GET GENRES </a>
+    </Button>
+    <Button>
+      <a @click="createPlaylist"> CREATE PLAYLIST </a>
+    </Button>
     {{ selectedGenres }}
     <div v-if="favouriteGenres && favouriteGenres.length">
       <h2>Favourite Genres</h2>
