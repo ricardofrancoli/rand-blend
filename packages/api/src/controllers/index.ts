@@ -17,8 +17,6 @@ const MAX_OFFSET = TRACKS_TO_FETCH * 1000
 const initialiseSpotifySdk = (accessToken: AccessToken) => {
   const spotifySdk = SpotifyApi.withAccessToken(CLIENT_ID, accessToken)
 
-  console.dir({ currAccessToken: accessToken, retrievedSpotifySdk: spotifySdk }, { depth: null })
-
   return spotifySdk
 }
 
@@ -39,15 +37,19 @@ const getTracksByGenre = async ({
     await pMap(
       genres,
       async (genre) => {
-        const trackItemsInGenre = (
-          await spotifySdk.search(
+        const fetchTracksInGenre = async () => {
+          return spotifySdk.search(
             `genre:${genre}`,
             ['track'],
             country as Market,
             TRACKS_TO_FETCH,
             offset
           )
-        ).tracks.items
+        }
+
+        const {
+          tracks: { items: trackItemsInGenre }
+        } = await fetchTracksInGenre()
 
         tracksByGenre[genre] = trackItemsInGenre.map((item) => {
           return {
@@ -64,8 +66,6 @@ const getTracksByGenre = async ({
 
     return tracksByGenre
   } catch (err) {
-    console.error(err)
-
     const errorMessage = err instanceof Error ? err.message : 'Unknown error'
 
     throw new Error('Failed to get tracks by genre', { cause: errorMessage })
@@ -169,8 +169,6 @@ export const createPlaylist = async ({
     public: false
   })
   await spotifySdk.playlists.addItemsToPlaylist(newPlaylist.id, randomTrackUris)
-
-  console.dir({ newPlaylist, playlistName }, { depth: null })
 }
 
 export const getFavs = async (accessToken: AccessToken) => {

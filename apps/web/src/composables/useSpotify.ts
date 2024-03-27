@@ -24,8 +24,6 @@ export default function useSpotify() {
   const handleAccessToken = async () => {
     const accessToken = await spotify.getAccessToken()
 
-    console.log('accessToken', accessToken)
-
     return accessToken
   }
 
@@ -46,8 +44,6 @@ export default function useSpotify() {
     const accessToken = await handleAccessToken()
 
     if (!accessToken) {
-      console.log('No access token')
-
       return login()
     }
 
@@ -68,12 +64,10 @@ export default function useSpotify() {
     const accessToken = await handleAccessToken()
 
     if (!accessToken) {
-      console.log('No access token')
-
       return login()
     }
 
-    const { body: playlist, status } = await client.createPlaylist({
+    const { status } = await client.createPlaylist({
       body: {
         accessToken,
         genres: selectedGenres.value,
@@ -85,8 +79,6 @@ export default function useSpotify() {
     if (status !== 201) {
       throw new Error('Failed to create playlist')
     }
-
-    console.log('playlist', playlist)
   }
 
   return {
