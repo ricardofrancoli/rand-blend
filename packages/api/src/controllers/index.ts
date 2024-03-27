@@ -1,5 +1,6 @@
 import pMap from 'p-map'
-import { SpotifyApi, type AccessToken, type Market, type Track } from '@spotify/web-api-ts-sdk'
+import { handleErrorMessage } from '@rand-blend/utils'
+import { SpotifyApi, type AccessToken, type Market } from '@spotify/web-api-ts-sdk'
 
 import { CLIENT_ID } from '../config'
 
@@ -66,9 +67,9 @@ const getTracksByGenre = async ({
 
     return tracksByGenre
   } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    const errorMessage = handleErrorMessage(err, 'Failed to get tracks by genre')
 
-    throw new Error('Failed to get tracks by genre', { cause: errorMessage })
+    throw new Error(errorMessage)
   }
 }
 

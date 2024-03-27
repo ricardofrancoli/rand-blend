@@ -26,6 +26,9 @@ importers:
       '@rand-blend/api':
         specifier: workspace:*
         version: link:../../packages/api
+      '@rand-blend/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@ts-rest/core':
         specifier: ^3.36.0
         version: 3.36.0(zod@3.22.4)
@@ -126,6 +129,9 @@ importers:
       '@fastify/cors':
         specifier: ^9.0.1
         version: 9.0.1
+      '@rand-blend/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@spotify/web-api-ts-sdk':
         specifier: ^1.2.0
         version: 1.2.0
@@ -159,6 +165,18 @@ importers:
         version: 3.22.4
 
   packages/tsconfig: {}
+
+  packages/utils:
+    devDependencies:
+      '@rand-blend/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      tsx:
+        specifier: ^4.7.1
+        version: 4.7.1
+      typescript:
+        specifier: ~5.4.0
+        version: 5.4.3
 
 packages:
 

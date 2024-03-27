@@ -1,0 +1,20 @@
+{
+  "name": "@rand-blend/utils",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsx",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rand-blend/tsconfig": "workspace:*",
+    "tsx": "^4.7.1",
+    "typescript": "~5.4.0"
+  }
+}
