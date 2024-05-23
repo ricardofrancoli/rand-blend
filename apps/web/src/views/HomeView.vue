@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import useSpotify from '@/composables/useSpotify'
+import { GenreToggle } from '@/components/genre-toggle'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -26,6 +27,7 @@ const toggleAllGenres = (isSelected: boolean) => {
 }
 
 const toggleGenre = (genre: string, isSelected: boolean) => {
+  console.log('isSelected', isSelected)
   if (isSelected) {
     selectedGenres.value.push(genre)
   } else {
@@ -78,11 +80,11 @@ const toggleGenre = (genre: string, isSelected: boolean) => {
       </div>
 
       <div v-for="genre in favouriteGenres" :key="genre">
-        <Checkbox
-          :checked="selectedGenres.includes(genre)"
-          @update:checked="(isSelected) => toggleGenre(genre, isSelected)"
+        <GenreToggle
+          @checked="(isSelected) => toggleGenre(genre, isSelected)"
+          :is-selected="selectedGenres.includes(genre)"
+          :genre="genre"
         />
-        <label> | {{ genre }}</label>
       </div>
     </div>
   </main>
