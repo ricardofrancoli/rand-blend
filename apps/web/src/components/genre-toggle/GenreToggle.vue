@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import type { GenreItem } from '@/components/types'
 
-defineProps<{ isSelected: boolean; genre: string }>()
+defineProps<GenreItem>()
 defineEmits<{
   (e: 'checked', checked: boolean): void
 }>()

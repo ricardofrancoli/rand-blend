@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import useSpotify from '@/composables/useSpotify'
-import { GenreToggle } from '@/components/genre-toggle'
+import { GenreToggleContainer } from '@/components/genre-toggle-container'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -34,6 +35,13 @@ const toggleGenre = (genre: string, isSelected: boolean) => {
     selectedGenres.value = selectedGenres.value.filter((item) => item !== genre)
   }
 }
+
+const genreItems = computed(() => {
+  return favouriteGenres.value.map((genre) => ({
+    genre,
+    isSelected: selectedGenres.value.includes(genre)
+  }))
+})
 </script>
 
 <template>
@@ -79,13 +87,10 @@ const toggleGenre = (genre: string, isSelected: boolean) => {
         <label> | Select All</label>
       </div>
 
-      <div v-for="genre in favouriteGenres" :key="genre">
-        <GenreToggle
-          @checked="(isSelected) => toggleGenre(genre, isSelected)"
-          :is-selected="selectedGenres.includes(genre)"
-          :genre="genre"
-        />
-      </div>
+      <GenreToggleContainer
+        @checked="({ genre, isSelected }) => toggleGenre(genre, isSelected)"
+        :genre-items="genreItems"
+      />
     </div>
   </main>
 </template>
