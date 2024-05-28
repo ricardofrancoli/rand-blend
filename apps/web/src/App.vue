@@ -12,7 +12,14 @@ import { RouterLink, RouterView } from 'vue-router'
     </div>
   </header>
 
-  <RouterView />
+  <div class="router-container">
+    <RouterView />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="postcss">
+.router-container,
+.wrapper {
+  @apply mx-8;
+}
+</style>
