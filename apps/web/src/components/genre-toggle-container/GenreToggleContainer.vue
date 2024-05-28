@@ -9,11 +9,19 @@ defineEmits<{
 </script>
 
 <template>
-  <div v-for="{ genre, isSelected } in props.genreItems" :key="genre">
-    <GenreToggle
-      @checked="(isSelected) => $emit('checked', { genre, isSelected })"
-      :is-selected="isSelected"
-      :genre="genre"
-    />
+  <div class="genre-toggle-container">
+    <div v-for="{ genre, isSelected } in props.genreItems" :key="genre">
+      <GenreToggle
+        @checked="(isSelected) => $emit('checked', { genre, isSelected })"
+        :is-selected="isSelected"
+        :genre="genre"
+      />
+    </div>
   </div>
 </template>
+
+<style scoped lang="postcss">
+.genre-toggle-container {
+  @apply flex flex-wrap gap-2;
+}
+</style>
