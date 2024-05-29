@@ -78,7 +78,7 @@ const genreItems = computed(() => {
         <a @click="createPlaylist"> CREATE PLAYLIST </a>
       </Button>
     </template>
-    {{ selectedGenres }}
+
     <div v-if="favouriteGenres && favouriteGenres.length">
       <h2>Favourite Genres</h2>
 
