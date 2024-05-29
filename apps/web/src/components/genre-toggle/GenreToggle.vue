@@ -12,10 +12,13 @@ defineEmits<{
 
 <template>
   <div @click="$emit('checked', !isSelected)">
-    <Button class="flex gap-2" :class="isSelected ? 'bg-selected hover:bg-selected/90' : ''">
+    <Button
+      class="flex gap-2 cursor-pointer"
+      :class="isSelected ? 'bg-selected hover:bg-selected/90' : ''"
+    >
       <Plus v-if="!isSelected" class="h-4 w-4" />
       <Checkbox v-else :checked="isSelected" />
-      <label>{{ genre }}</label>
+      <label class="cursor-pointer">{{ genre }}</label>
     </Button>
   </div>
 </template>
