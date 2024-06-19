@@ -1,6 +1,6 @@
 import pMap from 'p-map'
 import { handleErrorMessage } from '@rand-blend/utils'
-import { SpotifyApi, type AccessToken, type Market } from '@spotify/web-api-ts-sdk'
+import { SpotifyApi, type AccessToken, type Artist, type Market } from '@spotify/web-api-ts-sdk'
 
 import { CLIENT_ID } from '../config'
 
@@ -173,13 +173,26 @@ export const getFavs = async ({
   accessToken: AccessToken
   timeRange: TimeRange
 }) => {
+  const BATCH_SIZE = 50
   const spotifySdk = initialiseSpotifySdk(accessToken)
 
-  const topTracks = await spotifySdk.currentUser.topItems('tracks', timeRange, 50)
+  const [topTracksBatch1, topTracksBatch2] = await Promise.all([
+    spotifySdk.currentUser.topItems('tracks', timeRange, BATCH_SIZE),
+    spotifySdk.currentUser.topItems('tracks', timeRange, BATCH_SIZE, BATCH_SIZE + 1)
+  ])
 
-  const artistIds: string[] = []
+  const topTracks = [...topTracksBatch1.items, ...topTracksBatch2.items]
+
+  const artistIds: string[][] = []
   const trackPopularities: number[] = []
-  topTracks.items.forEach((track) => {
+
+  let artistIdsIndex = 0
+
+  topTracks.forEach((track, i) => {
+    if (i && i % BATCH_SIZE === 0) {
+      artistIdsIndex++
+    }
+
     trackPopularities.push(track.popularity)
 
     const artistId = track.artists[0]?.id
@@ -188,13 +201,17 @@ export const getFavs = async ({
       return
     }
 
-    artistIds.push(artistId)
+    artistIds[artistIdsIndex] = [...(artistIds[artistIdsIndex] || []), artistId]
   })
 
   const popularityAverage = trackPopularities.reduce((a, b) => a + b, 0) / trackPopularities.length
 
-  const artists = await spotifySdk.artists.get(artistIds)
-  const genres = artists.flatMap((artist) => artist.genres)
+  const artistPromises: Promise<Artist[]>[] = artistIds.map((artists) =>
+    spotifySdk.artists.get(artists)
+  )
+
+  const artistsRes = await Promise.all(artistPromises)
+  const genres = artistsRes.flatMap((artists) => artists.flatMap((artist) => artist.genres))
 
   const uniqueGenres = Array.from(new Set(genres))
 
