@@ -8,7 +8,12 @@ import type { TimeRange } from '@rand-blend/api'
 const { VITE_CLIENT_ID = '', VITE_REDIRECT_URI = '' } = import.meta.env
 
 export default function useSpotify() {
-  if (!VITE_CLIENT_ID || !VITE_REDIRECT_URI) {
+  if (
+    !VITE_CLIENT_ID ||
+    !VITE_REDIRECT_URI ||
+    typeof VITE_CLIENT_ID !== 'string' ||
+    typeof VITE_REDIRECT_URI !== 'string'
+  ) {
     throw new Error('Missing environment variables')
   }
 
