@@ -6,7 +6,7 @@
   },
   "type": "module",
   "scripts": {
-    "build": "tsx",
+    "dev": "tsx watch ./index.ts --watch",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
