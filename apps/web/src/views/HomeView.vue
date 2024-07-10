@@ -3,7 +3,6 @@ import { computed } from 'vue'
 import useSpotify from '@/composables/useSpotify'
 import { GenreToggleContainer } from '@/components/genre-toggle-container'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 
@@ -18,14 +17,6 @@ const {
   favouriteGenres,
   selectedGenres
 } = useSpotify()
-
-const toggleAllGenres = (isSelected: boolean) => {
-  if (isSelected) {
-    selectedGenres.value = favouriteGenres.value
-  } else {
-    selectedGenres.value = []
-  }
-}
 
 const toggleGenre = (genre: string, isSelected: boolean) => {
   console.log('isSelected', isSelected)
@@ -81,11 +72,6 @@ const genreItems = computed(() => {
 
     <div v-if="favouriteGenres && favouriteGenres.length">
       <h2>Favourite Genres</h2>
-
-      <div>
-        <Checkbox @update:checked="(isSelected) => toggleAllGenres(isSelected)" />
-        <label> | Select All</label>
-      </div>
 
       <GenreToggleContainer
         @checked="({ genre, isSelected }) => toggleGenre(genre, isSelected)"
