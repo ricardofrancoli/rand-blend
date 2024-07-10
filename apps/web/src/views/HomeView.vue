@@ -47,7 +47,7 @@ const genreItems = computed(() => {
 <template>
   <main>
     <Button v-if="!accessToken">
-      <a @click="() => login()"> LOGIN </a>
+      <a @click="login"> LOGIN </a>
     </Button>
 
     <template v-else>

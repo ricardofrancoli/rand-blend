@@ -6,20 +6,21 @@ import { Spinner } from '@/components/ui/spinner'
 
 const { accessToken, login } = useSpotify()
 
-const isLoggedIn = ref(!!accessToken.value)
+const isLoggedIn = ref(false)
 
 onBeforeMount(async () => {
   await login()
 
   isLoggedIn.value = true
+
+  router.go(-1)
 })
 
 console.log('after login', accessToken.value)
 
 const router = useRouter()
-router.go(-1)
 </script>
 
 <template>
-  <Spinner v-if="!isLoggedIn" :size="200" />
+  <Spinner v-if="!isLoggedIn" :size="100" />
 </template>

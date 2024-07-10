@@ -34,13 +34,11 @@ export default function useSpotify() {
     accessToken.value = await handleAccessToken()
   })
 
-  const login = async (options?: { isSecondRedirect: boolean }) => {
+  const login = async () => {
     try {
-      const redirectUri = options?.isSecondRedirect ? 'http://localhost:5137' : VITE_REDIRECT_URI
-
       await SpotifyApi.performUserAuthorization(
         VITE_CLIENT_ID,
-        redirectUri,
+        VITE_REDIRECT_URI,
         ['user-read-private', 'user-read-email', 'user-top-read', 'playlist-modify-private'],
         'http://localhost:3003/api/login'
       )
