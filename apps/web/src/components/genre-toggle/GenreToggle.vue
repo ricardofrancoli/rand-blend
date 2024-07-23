@@ -15,6 +15,7 @@ defineEmits<{
     <Button
       class="flex gap-2 cursor-pointer"
       :class="isSelected ? 'bg-selected hover:bg-selected/90' : ''"
+      :variant="'pill'"
     >
       <Plus v-if="!isSelected" class="h-4 w-4" />
       <Checkbox v-else :checked="isSelected" />

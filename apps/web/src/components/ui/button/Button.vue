@@ -11,7 +11,8 @@ interface Props extends PrimitiveProps {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  as: 'button'
+  as: 'button',
+  variant: 'default'
 })
 </script>
 
@@ -26,9 +27,3 @@ const props = withDefaults(defineProps<Props>(), {
     </Primitive>
   </div>
 </template>
-
-<style scoped lang="postcss">
-.button {
-  @apply my-4;
-}
-</style>
