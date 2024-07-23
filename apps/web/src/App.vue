@@ -16,6 +16,16 @@ import { NavBar } from '@/components/nav-bar'
   </div>
 </template>
 
+<style lang="postcss">
+h1 {
+  @apply text-5xl font-bold text-left my-4;
+}
+
+h2 {
+  @apply text-4xl font-bold text-left my-4;
+}
+</style>
+
 <style scoped lang="postcss">
 .router-container,
 .wrapper {

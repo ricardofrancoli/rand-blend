@@ -38,8 +38,10 @@ const genreItems = computed(() => {
 
 <template>
   <main>
+    <h2>Genre Blender</h2>
+
     <Button v-if="!accessToken">
-      <a @click="login"> LOGIN </a>
+      <a @click="login"> LOG IN TO SPOTIFY </a>
     </Button>
 
     <template v-else>
