@@ -5,6 +5,7 @@ import { GenreToggleContainer } from '@/components/genre-toggle-container'
 import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 
 const {
   accessToken,
@@ -15,7 +16,8 @@ const {
   DEFAULT_TIME_RANGE,
   timeRange,
   favouriteGenres,
-  selectedGenres
+  selectedGenres,
+  isLoadingFavs
 } = useSpotify()
 
 const toggleGenre = (genre: string, isSelected: boolean) => {
@@ -61,7 +63,7 @@ const genreItems = computed(() => {
           </div>
         </RadioGroup>
 
-        <Button>
+        <Button :disabled="isLoadingFavs">
           <a @click="getFavs"> GET GENRES </a>
         </Button>
       </div>
@@ -69,6 +71,8 @@ const genreItems = computed(() => {
         <a @click="createPlaylist"> CREATE PLAYLIST </a>
       </Button>
     </template>
+
+    <Spinner v-if="isLoadingFavs" :size="80" />
 
     <div v-if="favouriteGenres && favouriteGenres.length">
       <h2>Favourite Genres</h2>
