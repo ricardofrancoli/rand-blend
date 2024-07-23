@@ -97,7 +97,7 @@ export default function useSpotify() {
   }
 
   const selectedGenres = ref<string[]>([])
-  const createPlaylist = async () => {
+  const createPlaylist = async (playlistName: string) => {
     if (!accessToken.value) {
       return login()
     }
@@ -106,7 +106,7 @@ export default function useSpotify() {
       body: {
         accessToken: accessToken.value,
         genres: selectedGenres.value,
-        playlistName: Math.random().toString(),
+        playlistName,
         requestedPopularity: requestedPopularity.value
       }
     })

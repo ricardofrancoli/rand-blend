@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import useSpotify from '@/composables/useSpotify'
 import { GenreToggleContainer } from '@/components/genre-toggle-container'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Spinner } from '@/components/ui/spinner'
@@ -34,6 +35,8 @@ const genreItems = computed(() => {
     isSelected: selectedGenres.value.includes(genre)
   }))
 })
+
+const playlistName = ref('')
 </script>
 
 <template>
@@ -65,9 +68,16 @@ const genreItems = computed(() => {
           <a @click="getFavs"> GET GENRES </a>
         </Button>
       </div>
-      <Button v-else :disabled="!selectedGenres.length">
-        <a @click="createPlaylist"> CREATE PLAYLIST </a>
-      </Button>
+      <template v-else>
+        <Input placeholder="Playlist name" v-model="playlistName" />
+        <Button
+          :variant="
+            !selectedGenres.length || isLoadingFavs || !playlistName ? 'disabled' : 'default'
+          "
+        >
+          <a @click="createPlaylist(playlistName)"> CREATE PLAYLIST </a>
+        </Button>
+      </template>
     </template>
 
     <Spinner v-if="isLoadingFavs" :size="80" />
