@@ -34,6 +34,7 @@ export default function useSpotify() {
 
   onBeforeMount(async () => {
     accessToken.value = await handleAccessToken()
+    isLoggedIn.value = !!accessToken.value
   })
 
   const login = async () => {
