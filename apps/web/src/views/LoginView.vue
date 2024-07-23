@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import useSpotify from '@/composables/useSpotify'
 import { Spinner } from '@/components/ui/spinner'
 
-const { accessToken, login } = useSpotify()
-
-const isLoggedIn = ref(false)
+const { accessToken, isLoggedIn, login } = useSpotify()
 
 onBeforeMount(async () => {
   await login()

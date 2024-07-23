@@ -7,6 +7,8 @@ import type { TimeRange } from '@rand-blend/api'
 
 const { VITE_CLIENT_ID = '', VITE_REDIRECT_URI = '' } = import.meta.env
 
+const isLoggedIn = ref(false)
+
 export default function useSpotify() {
   if (
     !VITE_CLIENT_ID ||
@@ -114,6 +116,7 @@ export default function useSpotify() {
   }
 
   return {
+    isLoggedIn,
     accessToken,
     login,
     logout,

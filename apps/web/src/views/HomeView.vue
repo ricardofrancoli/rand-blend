@@ -10,7 +10,6 @@ import { Spinner } from '@/components/ui/spinner'
 const {
   accessToken,
   login,
-  logout,
   getFavs,
   createPlaylist,
   DEFAULT_TIME_RANGE,
@@ -44,9 +43,6 @@ const genreItems = computed(() => {
     </Button>
 
     <template v-else>
-      <Button>
-        <a @click="logout"> LOGOUT </a>
-      </Button>
       <div v-if="!favouriteGenres.length">
         <RadioGroup class="flex" :default-value="DEFAULT_TIME_RANGE" v-model="timeRange">
           <div>
