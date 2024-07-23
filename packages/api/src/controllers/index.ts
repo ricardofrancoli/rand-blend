@@ -68,13 +68,17 @@ const getTracksByGenre = async ({
 }
 
 const calculateTopAndBottomPopularity = (requestedPopularity: number, offset: number) => {
+  // Slightly increase the bottom and top popularity the more tracks we've fetched
+  const averagePopularity = (requestedPopularity * 5) / 100
+  const popularityOffset = Math.floor(averagePopularity * (offset / TRACKS_TO_FETCH))
+
   // If we've fetched 20 times or more, forget about averages and just get any track
   if (offset >= TRACKS_TO_FETCH * 20) {
     return { bottomPopularity: 0, topPopularity: 100 }
   }
 
-  const bottomPopularity = requestedPopularity * 0.5
-  const topPopularity = requestedPopularity * 1.5
+  const bottomPopularity = requestedPopularity - popularityOffset
+  const topPopularity = requestedPopularity + popularityOffset * 2
 
   return { bottomPopularity, topPopularity }
 }
