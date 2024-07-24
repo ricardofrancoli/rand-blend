@@ -5,12 +5,10 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": [".env"],
       "outputs": ["dist/**"]
     },
     "web#build": {
       "dependsOn": ["^build"],
-      "env": [".env.local"],
       "outputs": ["dist/**"]
     },
     "test": {
