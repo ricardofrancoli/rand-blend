@@ -1,26 +1,14 @@
 import { onBeforeMount, ref } from 'vue'
 
 import { client } from '@/client'
+import { VITE_CLIENT_ID, VITE_REDIRECT_URI, VITE_API_BASE_URL } from '@/config'
 import { SpotifyApi, type AccessToken } from '@spotify/web-api-ts-sdk'
 
 import type { TimeRange } from '@rand-blend/api'
 
-const { VITE_CLIENT_ID = '', VITE_REDIRECT_URI = '', VITE_API_BASE_URL = '' } = import.meta.env
-
 const isLoggedIn = ref(false)
 
 export default function useSpotify() {
-  if (
-    !VITE_CLIENT_ID ||
-    !VITE_REDIRECT_URI ||
-    !VITE_API_BASE_URL ||
-    typeof VITE_CLIENT_ID !== 'string' ||
-    typeof VITE_REDIRECT_URI !== 'string' ||
-    typeof VITE_API_BASE_URL !== 'string'
-  ) {
-    throw new Error('Missing environment variables')
-  }
-
   const DEFAULT_TIME_RANGE = 'long_term' satisfies TimeRange
 
   const accessToken = ref<AccessToken | null>(null)
