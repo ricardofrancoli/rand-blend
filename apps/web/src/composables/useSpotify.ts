@@ -5,7 +5,7 @@ import { SpotifyApi, type AccessToken } from '@spotify/web-api-ts-sdk'
 
 import type { TimeRange } from '@rand-blend/api'
 
-const { VITE_CLIENT_ID = '', VITE_REDIRECT_URI = '' } = import.meta.env
+const { VITE_CLIENT_ID = '', VITE_REDIRECT_URI = '', VITE_API_BASE_URL = '' } = import.meta.env
 
 const isLoggedIn = ref(false)
 
@@ -13,8 +13,10 @@ export default function useSpotify() {
   if (
     !VITE_CLIENT_ID ||
     !VITE_REDIRECT_URI ||
+    !VITE_API_BASE_URL ||
     typeof VITE_CLIENT_ID !== 'string' ||
-    typeof VITE_REDIRECT_URI !== 'string'
+    typeof VITE_REDIRECT_URI !== 'string' ||
+    typeof VITE_API_BASE_URL !== 'string'
   ) {
     throw new Error('Missing environment variables')
   }
@@ -39,11 +41,13 @@ export default function useSpotify() {
 
   const login = async () => {
     try {
+      const postBackUrl = `${VITE_API_BASE_URL}/api/login`
+
       await SpotifyApi.performUserAuthorization(
         VITE_CLIENT_ID,
         VITE_REDIRECT_URI,
         ['user-read-private', 'user-read-email', 'user-top-read', 'playlist-modify-private'],
-        'http://localhost:3003/api/login'
+        postBackUrl
       )
 
       accessToken.value = await handleAccessToken()
