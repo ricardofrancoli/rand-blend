@@ -1,5 +1,5 @@
 import { initClient } from '@ts-rest/core'
-import { contract } from '../../api/src'
+import { contract } from '@rand-blend/api'
 
 export const client = initClient(contract, {
   baseUrl: 'http://localhost:3003',

@@ -3,7 +3,7 @@ import { onBeforeMount, ref } from 'vue'
 import { client } from '@/client'
 import { SpotifyApi, type AccessToken } from '@spotify/web-api-ts-sdk'
 
-import type { TimeRange } from '../../../api/src'
+import type { TimeRange } from '@rand-blend/api'
 
 const { VITE_CLIENT_ID = '', VITE_REDIRECT_URI = '' } = import.meta.env
 
