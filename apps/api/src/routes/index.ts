@@ -3,10 +3,9 @@ import cors from '@fastify/cors'
 import { SpotifyApi } from '@spotify/web-api-ts-sdk'
 import { initServer } from '@ts-rest/fastify'
 
+import { APP_BASE_URL, CLIENT_ID } from '../config'
 import { createPlaylist, getFavs } from '../controllers'
 import { contract } from './contract'
-
-const { CLIENT_ID = '' } = process.env
 
 export const app = Fastify({
   logger: true
@@ -14,7 +13,7 @@ export const app = Fastify({
 const s = initServer()
 
 app.register(cors, {
-  origin: 'http://localhost:5173',
+  origin: APP_BASE_URL,
   credentials: true
 })
 
