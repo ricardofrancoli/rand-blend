@@ -6,6 +6,7 @@
   },
   "type": "module",
   "scripts": {
+    "build": "tsup",
     "dev": "tsx watch ./src/server/index.ts --watch",
     "lint": "eslint . --ext .ts"
   },
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@rand-blend/tsconfig": "workspace:*",
     "dotenv": "^16.4.5",
+    "tsup": "^8.2.3",
     "tsx": "^4.7.1",
     "typescript": "~5.4.0",
     "zod": "^3.22.4"
