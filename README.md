@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Spotify Genre Blender is an application that leverages the [Spotify API](https://developer.spotify.com/documentation/web-api) to analyse your most listened genres across different time ranges (short, medium, or long term). Users can select their favorite genres and generate a new Spotify playlist that blends these genres, creating a unique listening experience
+Spotify Genre Blender is an application that leverages the [Spotify API](https://developer.spotify.com/documentation/web-api) to analyse your most listened genres across different time ranges (short, medium, or long term). Users can select their favourite genres and generate a new Spotify playlist that blends these genres, creating a unique listening experience
 
 ## Tech Stack
 
