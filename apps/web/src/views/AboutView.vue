@@ -20,11 +20,15 @@
 </template>
 
 <style lang="postcss">
+.about {
+  max-width: 70%;
+}
+
 .about p {
   @apply text-2xl my-4;
 }
 
 .about p:last-child {
-  @apply text-xl my-4;
+  @apply text-xl my-5;
 }
 </style>
