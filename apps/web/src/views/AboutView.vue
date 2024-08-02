@@ -19,4 +19,12 @@
   </div>
 </template>
 
-<style></style>
+<style lang="postcss">
+.about p {
+  @apply text-2xl my-4;
+}
+
+.about p:last-child {
+  @apply text-xl my-4;
+}
+</style>
