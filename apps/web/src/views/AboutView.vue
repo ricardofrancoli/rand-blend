@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<style lang="postcss">
+<style scoped lang="postcss">
 .about {
   max-width: 70%;
 }
