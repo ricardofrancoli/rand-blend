@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import useSpotify from '@/composables/useSpotify'
 import { Spinner } from '@/components/ui/spinner'
 
-const { accessToken, isLoggedIn, login } = useSpotify()
+const { isLoggedIn, login } = useSpotify()
 
 onBeforeMount(async () => {
   await login()
@@ -13,8 +13,6 @@ onBeforeMount(async () => {
 
   router.go(-1)
 })
-
-console.log('after login', accessToken.value)
 
 const router = useRouter()
 </script>
