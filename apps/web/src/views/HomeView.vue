@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label'
 import { Spinner } from '@/components/ui/spinner'
 
 const {
-  accessToken,
   login,
   getFavs,
   createPlaylist,
@@ -17,7 +16,8 @@ const {
   timeRange,
   favouriteGenres,
   selectedGenres,
-  isLoadingFavs
+  isLoadingFavs,
+  isLoggedIn
 } = useSpotify()
 
 const toggleGenre = (genre: string, isSelected: boolean) => {
@@ -43,7 +43,7 @@ const playlistName = ref('')
   <main>
     <h2>Genre Blender</h2>
 
-    <Button v-if="!accessToken">
+    <Button v-if="!isLoggedIn">
       <a @click="login"> LOG IN TO SPOTIFY </a>
     </Button>
 
