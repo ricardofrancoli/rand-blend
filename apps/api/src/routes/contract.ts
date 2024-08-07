@@ -33,13 +33,13 @@ export const contract = c.router(
       responses: {
         201: z.string()
       },
-      body: c.type<AccessToken>(),
+      body: z.undefined(),
       summary: 'Logout of Spotify'
     },
     getFavs: {
       method: 'POST',
       path: `/favs`,
-      body: c.type<{ accessToken: AccessToken; timeRange: TimeRange }>(),
+      body: c.type<{ timeRange: TimeRange }>(),
       responses: {
         200: c.type<Awaited<ReturnType<typeof getFavs>>>()
       },
@@ -49,7 +49,6 @@ export const contract = c.router(
       method: 'POST',
       path: '/create-playlist',
       body: c.type<{
-        accessToken: AccessToken
         genres: string[]
         playlistName: string
         requestedPopularity: number

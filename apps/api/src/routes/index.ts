@@ -17,6 +17,8 @@ app.register(cors, {
   credentials: true
 })
 
+let spotify: SpotifyApi | undefined
+
 const router = s.router(contract, {
   ping: async () => {
     return {
@@ -25,24 +27,28 @@ const router = s.router(contract, {
     }
   },
   login: async ({ body: accessToken }) => {
-    const spotify = SpotifyApi.withAccessToken(CLIENT_ID, accessToken)
+    spotify = SpotifyApi.withAccessToken(CLIENT_ID, accessToken)
 
     return {
       status: 201,
       body: 'Logged in!'
     }
   },
-  logout: async ({ body: accessToken }) => {
-    const spotify = SpotifyApi.withAccessToken(CLIENT_ID, accessToken)
-
-    spotify.logOut()
+  logout: async () => {
+    spotify?.logOut()
 
     return {
       status: 201,
       body: 'Logged out!'
     }
   },
-  getFavs: async ({ body: { accessToken, timeRange } }) => {
+  getFavs: async ({ body: { timeRange } }) => {
+    const accessToken = await spotify?.getAccessToken()
+
+    if (!accessToken) {
+      throw new Error('No access token to get favs')
+    }
+
     const favs = await getFavs({ accessToken, timeRange })
 
     return {
@@ -50,8 +56,14 @@ const router = s.router(contract, {
       body: favs
     }
   },
-  createPlaylist: async ({ body: { accessToken, genres, playlistName, requestedPopularity } }) => {
+  createPlaylist: async ({ body: { genres, playlistName, requestedPopularity } }) => {
     try {
+      const accessToken = await spotify?.getAccessToken()
+
+      if (!accessToken) {
+        throw new Error('No access token to create playlist')
+      }
+
       await createPlaylist({ accessToken, genres, playlistName, requestedPopularity })
     } catch (err) {
       console.error(err)
