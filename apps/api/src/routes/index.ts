@@ -3,12 +3,12 @@ import cors from '@fastify/cors'
 import { SpotifyApi } from '@spotify/web-api-ts-sdk'
 import { initServer } from '@ts-rest/fastify'
 
-import { APP_BASE_URL, CLIENT_ID } from '../config'
+import { APP_BASE_URL, CLIENT_ID, NODE_ENV, EnvToLogger } from '../config'
 import { createPlaylist, getFavs } from '../controllers'
 import { contract } from './contract'
 
 export const app = Fastify({
-  logger: true
+  logger: EnvToLogger[NODE_ENV] ?? true
 })
 const s = initServer()
 
