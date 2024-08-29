@@ -1,7 +1,7 @@
 import { initContract } from '@ts-rest/core'
 import { z } from 'zod'
 
-import { getFavs } from '../controllers'
+import { fetchFavs, getMoreFavs } from '../controllers'
 
 import type { AccessToken } from '@spotify/web-api-ts-sdk'
 import type { TimeRange } from '../types'
@@ -36,14 +36,23 @@ export const contract = c.router(
       body: z.undefined(),
       summary: 'Logout of Spotify'
     },
-    getFavs: {
+    fetchFavs: {
       method: 'POST',
       path: `/favs`,
       body: c.type<{ timeRange: TimeRange }>(),
       responses: {
-        200: c.type<Awaited<ReturnType<typeof getFavs>>>()
+        200: c.type<Awaited<ReturnType<typeof fetchFavs>>>()
       },
-      summary: 'Get favourite genres'
+      summary: 'Fetch initial favourite genres'
+    },
+    getMoreFavs: {
+      method: 'POST',
+      path: '/get-more-favs',
+      body: c.type<Parameters<typeof getMoreFavs>[0]>(),
+      responses: {
+        200: c.type<Awaited<ReturnType<typeof getMoreFavs>>>()
+      },
+      summary: 'Get more favourite genres'
     },
     createPlaylist: {
       method: 'POST',

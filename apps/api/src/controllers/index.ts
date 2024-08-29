@@ -1,16 +1,10 @@
 import pMap from 'p-map'
 import { handleErrorMessage } from '@rand-blend/utils'
-import {
-  SpotifyApi,
-  type AccessToken,
-  type Artist,
-  type Market,
-  type Track
-} from '@spotify/web-api-ts-sdk'
+import { SpotifyApi, type AccessToken, type Market } from '@spotify/web-api-ts-sdk'
 
 import { CLIENT_ID } from '../config'
 
-import type { GenreTrack, TimeRange } from '../types'
+import type { GenreTrack } from '../types'
 
 const TRACKS_TO_FETCH = 20
 const MAX_OFFSET = TRACKS_TO_FETCH * 1000
@@ -176,77 +170,4 @@ export const createPlaylist = async ({
   await spotifySdk.playlists.addItemsToPlaylist(newPlaylist.id, randomTrackUris)
 }
 
-const fetchTopTracks = async ({
-  spotifySdk,
-  timeRange
-}: {
-  spotifySdk: SpotifyApi
-  timeRange: TimeRange
-}) => {
-  const BATCH_SIZE = 50
-  const MAX_BATCHES = 10
-  const TARGET_UNIQUE_ARTISTS = 150
-
-  const tracks: Track[] = []
-  const uniqueArtistIds = new Set<string>()
-
-  await pMap(
-    Array(MAX_BATCHES),
-    async (_, i) => {
-      // Check if we have enough unique artists
-      if (uniqueArtistIds.size >= TARGET_UNIQUE_ARTISTS) {
-        return
-      }
-
-      const offset = i * BATCH_SIZE
-
-      const topTracksBatch = await spotifySdk.currentUser.topItems(
-        'tracks',
-        timeRange,
-        BATCH_SIZE,
-        offset
-      )
-
-      tracks.push(...topTracksBatch.items)
-
-      // Add artist ids to the set
-      topTracksBatch.items.forEach((track) => {
-        track.artists.forEach((artist) => uniqueArtistIds.add(artist.id))
-      })
-    },
-    { concurrency: MAX_BATCHES }
-  )
-
-  return {
-    uniqueArtistIds,
-    uniqueArtistCount: uniqueArtistIds.size,
-    tracks
-  }
-}
-
-export const getFavs = async ({
-  accessToken,
-  timeRange
-}: {
-  accessToken: AccessToken
-  timeRange: TimeRange
-}) => {
-  const spotifySdk = initialiseSpotifySdk(accessToken)
-
-  const { uniqueArtistIds, tracks } = await fetchTopTracks({ spotifySdk, timeRange })
-
-  const trackPopularities = tracks.map((track) => track.popularity)
-  const popularityAverage = trackPopularities.reduce((a, b) => a + b, 0) / trackPopularities.length
-
-  const artistPromises: Promise<Artist>[] = Array.from(uniqueArtistIds)
-    // TODO: make this slice dynamic and larger with a new param from the frontend. Getting rate limits otherwise
-    .slice(0, 5)
-    .map((artists) => spotifySdk.artists.get(artists))
-
-  const artistsRes = await Promise.all(artistPromises)
-  const genres = artistsRes.flatMap((artist) => artist.genres)
-
-  const uniqueGenres = Array.from(new Set(genres))
-
-  return { uniqueGenres, popularityAverage }
-}
+export * from './favs'

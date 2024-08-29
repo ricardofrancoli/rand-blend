@@ -4,7 +4,7 @@ import { SpotifyApi } from '@spotify/web-api-ts-sdk'
 import { initServer } from '@ts-rest/fastify'
 
 import { APP_BASE_URL, CLIENT_ID, NODE_ENV, EnvToLogger } from '../config'
-import { createPlaylist, getFavs } from '../controllers'
+import { createPlaylist, fetchFavs } from '../controllers'
 import { contract } from './contract'
 
 export const app = Fastify({
@@ -42,18 +42,24 @@ const router = s.router(contract, {
       body: 'Logged out!'
     }
   },
-  getFavs: async ({ body: { timeRange } }) => {
-    const accessToken = await spotify?.getAccessToken()
-
-    if (!accessToken) {
+    if (!spotify) {
       throw new Error('No access token to get favs')
     }
 
-    const favs = await getFavs({ accessToken, timeRange })
+    const favs = await fetchFavs({ spotifySdk: spotify, timeRange })
 
     return {
       status: 200,
       body: favs
+    }
+  },
+  getMoreFavs: async ({ body: { uniqueArtistIds } }) => {
+    // TODO: implement
+    return {
+      status: 200,
+      body: {
+        uniqueGenres: []
+      }
     }
   },
   createPlaylist: async ({ body: { genres, playlistName, requestedPopularity } }) => {
