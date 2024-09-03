@@ -5,14 +5,19 @@ import type { FetchFavsParams, UniqueArtistIds } from './types'
 
 const getArtists = async ({
   spotifySdk,
-  uniqueArtistIds
+  uniqueArtistIds,
+  slicerBatch = 0
 }: {
   spotifySdk: SpotifyApi
   uniqueArtistIds: UniqueArtistIds
+  slicerBatch?: number
 }) => {
+  const MAX_ARTISTS = 50
+  const slicerIndexStart = slicerBatch * MAX_ARTISTS
+  const slicerIndexEnd = slicerIndexStart + MAX_ARTISTS
+
   const artistPromises: Promise<Artist>[] = Array.from(uniqueArtistIds)
-    // TODO: make this slice dynamic and larger with a new param from the frontend. Getting rate limits otherwise
-    .slice(0, 30)
+    .slice(slicerIndexStart, slicerIndexEnd)
     .map((artists) => spotifySdk.artists.get(artists))
 
   return Promise.all(artistPromises)
