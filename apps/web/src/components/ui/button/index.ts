@@ -7,14 +7,14 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground my-4 hover:bg-primary/90',
+        default: 'bg-primary text-primary-foreground my-2 hover:bg-primary/90',
         pill: 'bg-primary text-primary-foreground hover:bg-primary/80',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-        disabled: 'bg-primary/50 my-4 cursor-not-allowed opacity-50'
+        disabled: 'bg-primary/50 my-2 cursor-not-allowed opacity-50'
       },
       size: {
         default: 'h-10 px-4 py-2',
