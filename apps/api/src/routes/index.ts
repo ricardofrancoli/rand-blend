@@ -42,6 +42,7 @@ const router = s.router(contract, {
       body: 'Logged out!'
     }
   },
+  fetchFavs: async ({ body: { timeRange } }) => {
     if (!spotify) {
       throw new Error('No access token to get favs')
     }
