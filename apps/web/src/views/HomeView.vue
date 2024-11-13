@@ -17,7 +17,7 @@ const {
   timeRange,
   favouriteGenres,
   selectedGenres,
-  isLoadingFavs,
+  isLoading,
   isLoggedIn
 } = useSpotify()
 
@@ -42,7 +42,7 @@ const playlistName = ref('')
 const isEnoughSelectedGenres = computed(() => selectedGenres.value.length >= 5)
 const hasPlaylistName = computed(() => !!playlistName.value)
 const canCreatePlaylist = computed(() => {
-  return !isLoadingFavs.value && hasPlaylistName.value && isEnoughSelectedGenres.value
+  return !isLoading.value && hasPlaylistName.value && isEnoughSelectedGenres.value
 })
 const invalidCreatePlaylistMsg = computed<string>(() => {
   if (!isEnoughSelectedGenres.value) {
@@ -82,7 +82,7 @@ const invalidCreatePlaylistMsg = computed<string>(() => {
           </div>
         </RadioGroup>
 
-        <Button :disabled="isLoadingFavs">
+        <Button :disabled="isLoading">
           <a @click="getFavs"> GET GENRES </a>
         </Button>
       </div>
@@ -103,9 +103,8 @@ const invalidCreatePlaylistMsg = computed<string>(() => {
       </template>
     </template>
 
-    <Spinner v-if="isLoadingFavs" :size="80" />
-
-    <div v-if="favouriteGenres && favouriteGenres.length">
+    <Spinner v-if="isLoading" :size="80" />
+    <div v-else-if="favouriteGenres && favouriteGenres.length">
       <h2>Favourite Genres</h2>
 
       <GenreToggleContainer
