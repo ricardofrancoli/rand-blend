@@ -1,10 +1,10 @@
 import pMap from 'p-map'
 import { handleErrorMessage } from '@rand-blend/utils'
-import { SpotifyApi, type AccessToken, type Artist, type Market } from '@spotify/web-api-ts-sdk'
+import { SpotifyApi, type AccessToken, type Market } from '@spotify/web-api-ts-sdk'
 
 import { CLIENT_ID } from '../config'
 
-import type { GenreTrack, TimeRange } from '../types'
+import type { GenreTrack } from '../types'
 
 const TRACKS_TO_FETCH = 20
 const MAX_OFFSET = TRACKS_TO_FETCH * 1000
@@ -170,54 +170,4 @@ export const createPlaylist = async ({
   await spotifySdk.playlists.addItemsToPlaylist(newPlaylist.id, randomTrackUris)
 }
 
-export const getFavs = async ({
-  accessToken,
-  timeRange
-}: {
-  accessToken: AccessToken
-  timeRange: TimeRange
-}) => {
-  const BATCH_SIZE = 50
-  const spotifySdk = initialiseSpotifySdk(accessToken)
-
-  const [topTracksBatch1, topTracksBatch2] = await Promise.all([
-    spotifySdk.currentUser.topItems('tracks', timeRange, BATCH_SIZE),
-    spotifySdk.currentUser.topItems('tracks', timeRange, BATCH_SIZE, BATCH_SIZE + 1)
-  ])
-
-  const topTracks = [...topTracksBatch1.items, ...topTracksBatch2.items]
-
-  const artistIds: string[][] = []
-  const trackPopularities: number[] = []
-
-  let artistIdsIndex = 0
-
-  topTracks.forEach((track, i) => {
-    if (i && i % BATCH_SIZE === 0) {
-      artistIdsIndex++
-    }
-
-    trackPopularities.push(track.popularity)
-
-    const artistId = track.artists[0]?.id
-
-    if (!artistId) {
-      return
-    }
-
-    artistIds[artistIdsIndex] = [...(artistIds[artistIdsIndex] || []), artistId]
-  })
-
-  const popularityAverage = trackPopularities.reduce((a, b) => a + b, 0) / trackPopularities.length
-
-  const artistPromises: Promise<Artist[]>[] = artistIds.map((artists) =>
-    spotifySdk.artists.get(artists)
-  )
-
-  const artistsRes = await Promise.all(artistPromises)
-  const genres = artistsRes.flatMap((artists) => artists.flatMap((artist) => artist.genres))
-
-  const uniqueGenres = Array.from(new Set(genres))
-
-  return { uniqueGenres, popularityAverage }
-}
+export * from './favs'

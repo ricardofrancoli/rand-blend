@@ -68,7 +68,7 @@ export default function useSpotify() {
 
     isLoadingFavs.value = true
 
-    const { body: favs, status } = await client.getFavs({
+    const { body: favs, status } = await client.fetchFavs({
       body: { timeRange: timeRange.value }
     })
 
