@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Spinner } from '@/components/ui/spinner'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 const {
   login,
@@ -16,7 +17,7 @@ const {
   timeRange,
   favouriteGenres,
   selectedGenres,
-  isLoadingFavs,
+  isLoading,
   isLoggedIn
 } = useSpotify()
 
@@ -37,6 +38,23 @@ const genreItems = computed(() => {
 })
 
 const playlistName = ref('')
+
+const isEnoughSelectedGenres = computed(() => selectedGenres.value.length >= 5)
+const hasPlaylistName = computed(() => !!playlistName.value)
+const canCreatePlaylist = computed(() => {
+  return !isLoading.value && hasPlaylistName.value && isEnoughSelectedGenres.value
+})
+const invalidCreatePlaylistMsg = computed<string>(() => {
+  if (!isEnoughSelectedGenres.value) {
+    return 'Select at least 5 genres'
+  }
+
+  if (!hasPlaylistName.value) {
+    return 'You need to add a playlist name'
+  }
+
+  return ''
+})
 </script>
 
 <template>
@@ -64,25 +82,29 @@ const playlistName = ref('')
           </div>
         </RadioGroup>
 
-        <Button :disabled="isLoadingFavs">
+        <Button :disabled="isLoading">
           <a @click="getFavs"> GET GENRES </a>
         </Button>
       </div>
       <template v-else>
         <Input placeholder="Playlist name" v-model="playlistName" />
-        <Button
-          :variant="
-            !selectedGenres.length || isLoadingFavs || !playlistName ? 'disabled' : 'default'
-          "
-        >
-          <a @click="createPlaylist(playlistName)"> CREATE PLAYLIST </a>
-        </Button>
+        <TooltipProvider>
+          <Tooltip :delay-duration="100">
+            <TooltipTrigger>
+              <Button :variant="canCreatePlaylist ? 'default' : 'disabled'">
+                <a @click="createPlaylist(playlistName)"> CREATE PLAYLIST </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent v-if="!canCreatePlaylist" :class="'bg-amber-900'">
+              {{ invalidCreatePlaylistMsg }}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </template>
     </template>
 
-    <Spinner v-if="isLoadingFavs" :size="80" />
-
-    <div v-if="favouriteGenres && favouriteGenres.length">
+    <Spinner v-if="isLoading" :size="80" />
+    <div v-else-if="favouriteGenres && favouriteGenres.length">
       <h2>Favourite Genres</h2>
 
       <GenreToggleContainer
