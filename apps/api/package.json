@@ -1,6 +1,6 @@
 {
   "name": "@rand-blend/api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "exports": {
     ".": "./src/index.ts"
   },
@@ -26,6 +26,7 @@
   "devDependencies": {
     "@rand-blend/tsconfig": "workspace:*",
     "dotenv": "^16.4.5",
+    "pino-pretty": "^13.0.0",
     "tsup": "^8.2.3",
     "tsx": "^4.7.1",
     "typescript": "~5.4.0",

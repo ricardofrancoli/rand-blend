@@ -59,21 +59,21 @@ export default function useSpotify() {
     requestedPopularity.value = 0
   }
 
-  const isLoadingFavs = ref(false)
+  const isLoading = ref(false)
 
   const getFavs = async () => {
     if (!isLoggedIn.value) {
       return login()
     }
 
-    isLoadingFavs.value = true
+    isLoading.value = true
 
-    const { body: favs, status } = await client.getFavs({
+    const { body: favs, status } = await client.fetchFavs({
       body: { timeRange: timeRange.value }
     })
 
     if (status !== 200) {
-      isLoadingFavs.value = false
+      isLoading.value = false
       throw new Error('Failed to get favs')
     }
 
@@ -81,7 +81,7 @@ export default function useSpotify() {
 
     favouriteGenres.value = uniqueGenres
     requestedPopularity.value = popularityAverage
-    isLoadingFavs.value = false
+    isLoading.value = false
   }
 
   const selectedGenres = ref<string[]>([])
@@ -90,6 +90,8 @@ export default function useSpotify() {
       return login()
     }
 
+    isLoading.value = true
+
     const { status } = await client.createPlaylist({
       body: {
         genres: selectedGenres.value,
@@ -97,6 +99,8 @@ export default function useSpotify() {
         requestedPopularity: requestedPopularity.value
       }
     })
+
+    isLoading.value = false
 
     if (status !== 201) {
       throw new Error('Failed to create playlist')
@@ -112,7 +116,7 @@ export default function useSpotify() {
     timeRange,
     favouriteGenres,
     selectedGenres,
-    isLoadingFavs,
+    isLoading,
     isLoggedIn
   }
 }
